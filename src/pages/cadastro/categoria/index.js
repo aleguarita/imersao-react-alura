@@ -22,17 +22,21 @@ function CadastroCategoria() {
     });
   }
 
+  // Isso acima substitui o abaixo:
   function handleChange(infosDoEvento) {
-    const { getAttribute, value } = infosDoEvento.target;
     setValue(
-      getAttribute('name'),
-      value,
+      infosDoEvento.target.getAttribute('name'),
+      infosDoEvento.target.value,
     );
   }
 
   useEffect(() => {
     // PUXA A URL PARA CARREGAR OS DADOS E ENTRE O RESULTADO
-    const URL_BASE = 'http://localhost:8080/categorias';
+    // compara pra ver se está rodando local para ter um banco de testes
+    // por ser variável de ambiente deve ser toda maiúscula
+    const URL_BASE = window.location.hostname.includes('localhost')
+      ? 'http://localhost:8080/categorias'
+      : 'https://alura-flix-aleguarita.herokuapp.com/categorias';
     fetch(URL_BASE)
       .then(async (respostaDoServidor) => {
         const resposta = await respostaDoServidor.json();
@@ -112,8 +116,8 @@ function CadastroCategoria() {
       {categorias.length === 0 && (
         <div>
           Carregando...
-        </div>)
-      }
+        </div>
+      )}
 
       <ul>
         {categorias.map((categoria) => (
